@@ -1,8 +1,9 @@
 import * as Menu from "../../constants/menu"
 
-export default function Variants({isVariants, handleDisplayImage, food, setSelectValue, quantity, setQuantity, handleFoodChange, handleSelectedFoodPhoto, handleSelectedFoodPrice }){
+export default function Variants({isVariants, handleAddVariantToCart, handleDisplayImage, food, setSelectValue, quantity, setQuantity, handleFoodChange, handleSelectedFoodPhoto, handleSelectedFoodPrice }){
  
     setSelectValue(document.getElementById("select"))
+
     return (
         <div className={`${ isVariants ? 'flex' : 'hidden' } w-4/5 justify-center items-center `}>
             <div className="w-full mt-2 flex flex-col justify-center items-center">
@@ -110,9 +111,13 @@ export default function Variants({isVariants, handleDisplayImage, food, setSelec
                 {
                     food !== "0" && (
                         <button
-                            className="h-12 bg-btnprimary w-4/5 mt-3 ml-3 text-sm font-bold rounded text-navbar" 
+                            className={`h-12 ${(isNaN(parseInt(quantity) * parseInt(handleSelectedFoodPrice())) || parseInt(quantity) * parseInt(handleSelectedFoodPrice()) < 0) ? 'bg-btnsecondary text-red-500' : 'bg-btnprimary'} w-4/5 mt-3 ml-3 text-sm font-bold rounded text-navbar`}
+                            onClick={()=>handleAddVariantToCart( quantity, food, parseInt(quantity) * parseInt(handleSelectedFoodPrice()) )}
+                            disabled={ (isNaN(parseInt(quantity) * parseInt(handleSelectedFoodPrice())) || parseInt(quantity) * parseInt(handleSelectedFoodPrice()) < 0) ? true : false } 
                         >
-                            Add To Cart
+                            {
+                                isNaN(parseInt(quantity) * parseInt(handleSelectedFoodPrice())) || parseInt(quantity) * parseInt(handleSelectedFoodPrice()) < 0 ? 'set available quantity' : 'Add to cart'
+                            }
                         </button>
                     )
                 }

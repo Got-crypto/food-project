@@ -15,10 +15,6 @@ export default function Gallery({handleDisplayImage, searchResults, searchedItem
 
     
     const [galleryContent, setGalleryContent] = useState(menu)
-    console.log('menu', menu)
-
-    console.log('galleryContent', galleryContent)
-    console.log('searchItems.length', searchedItems.length)
     useEffect(()=>{
         if( searchedItems !== "" ) {
             setGalleryContent(searchResults)
@@ -32,10 +28,10 @@ export default function Gallery({handleDisplayImage, searchResults, searchedItem
 
     
     return (
-        <div className="h-screen w-full">
+        <div className="h-screen w-full mt-7 lg:mt-0">
             <div className="h-full bg-hero bg-cover bg-no-repeat mx-auto bg-center w-full">
-                <div className="grid grid-cols-3 md:grid-cols-2 items-center h-full">
-                    <div className="col-span-2 md:col-span-1 h-auto">
+                <div className="flex flex-col lg:flex-row lg:inline-flex justify-center w-full items-center h-full">
+                    <div className="w-full lg:w-1/2 h-auto">
                         <p className="text-white text-4xl md:text-5xl font-bold font-header w-5/6 mx-auto">
                             Hungry for pie? <br/> Get your delicious pie now!
                         </p>
@@ -177,9 +173,9 @@ export default function Gallery({handleDisplayImage, searchResults, searchedItem
                                 )
                             }
                     </div>
-                    <div className="col-span-1 h-80 flex items-end">
+                    <div className="h-20 w-full lg:w-1/2 flex items-end">
                         <Link
-                            className="h-14 hover:bg-btnsecondary hover:text-black justify-center items-center py-2 px-4 rounded-md relative inline-flex bg-btnprimary text-white font-bold md:animate-bounce"
+                            className="h-14 ml-10 hover:bg-btnsecondary hover:text-black justify-center items-center py-2 px-4 rounded-md relative inline-flex bg-btnprimary text-white font-bold md:animate-bounce"
                             to='/payments'
                         >
                             <p>

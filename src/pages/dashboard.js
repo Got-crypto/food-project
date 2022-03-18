@@ -1,4 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
+import Authors from '../components/authors'
+import Documentaries from '../components/documentaries'
+import Footer from '../components/footer'
 import Gallery from '../components/gallery'
 import ImgDisplay from '../components/img-display'
 import Navbar from '../components/navbar'
@@ -75,7 +78,6 @@ export default function Dashboard(){
     const [food, setFood] = useState("0")
     const [quantity, setQuantity] = useState(1)
 
-    console.log('food', food)
 
     const handleSelectedFoodPrice = ()=>{
         for( let item of Menu.Menu ){
@@ -97,6 +99,24 @@ export default function Dashboard(){
         setFood(target.value)
         setQuantity(1)
     }
+
+    const handleAddVariantToCart = async ( quantity, food, price) => {
+
+        const {photo} = Menu.Menu.filter(item => item.name === food)[0]
+
+        const newProduct = {
+            quantity,
+            name: food,
+            price,
+            photo
+        }
+
+        await addItemToShoppingCart(user.uid, newProduct)
+
+        cart.push(newProduct)
+
+        setCartCount(cartCount + 1)
+    }
     
     useEffect(()=>{
         const getShoppingCart = async () =>{
@@ -111,7 +131,6 @@ export default function Dashboard(){
 
     const [searchResults, setSearchResults] = useState([])
 
-    console.log('searchResults', searchResults)
 
     useEffect(()=>{
 
@@ -138,7 +157,7 @@ export default function Dashboard(){
                 switchToShoppingCart={switchToShoppingCart}
                 setSidebarOpen={setSidebarOpen}
             />
-            <div className='h-auto mt-14 w-full bg-neutral-500'>
+            <div className='h-auto mt-14 w-full divide-y-2 bg-neutral-500'>
                 <Gallery 
                     clickedImage={clickedImage}
                     setClickedImage={setClickedImage}
@@ -156,6 +175,9 @@ export default function Dashboard(){
                     searchedItems={searchedItems}
                     searchResults={searchResults}
                 />
+                <Documentaries />
+                <Authors />
+                <Footer />
                 <Sidebar 
                     cart={cart}
                     food={food}
@@ -176,6 +198,7 @@ export default function Dashboard(){
                     switchToShoppingCart={switchToShoppingCart} 
                     sidebarOpen={sidebarOpen}
                     setSidebarOpen={setSidebarOpen}
+                    handleAddVariantToCart={handleAddVariantToCart}
                 />
             </div>
             <ImgDisplay

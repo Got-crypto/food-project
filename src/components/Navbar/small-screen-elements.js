@@ -1,4 +1,4 @@
-export default function SmallScreenElements( {searchedItems, setSearchedItems} ){
+export default function SmallScreenElements( {searchedItems, openShoppingCart, setSearchedItems, cartCount} ){
     return(
         <div className="h-16 max-w-screen-sm mx-auto lg:hidden flex justify-evenly md:justify-start items-center w-full">
             <div className="h-full inline-flex lg:hidden items-center center">
@@ -25,10 +25,17 @@ export default function SmallScreenElements( {searchedItems, setSearchedItems} )
                     </svg>
                 </button>  
             </div>
-            <button className="relative block md:hidden text-btnprimary">
-                <span className="absolute hidden h-4 w-4 justify-center -right-2 -top-2 p-3 items-center rounded-full bg-red-500 text-white">
-                    2
-                </span>
+            <button 
+                className="relative block md:hidden text-btnprimary"
+                onClick={()=> openShoppingCart()}
+            >
+                {
+                    cartCount > 0 && (
+                        <span className="absolute flex h-4 w-4 justify-center -right-2 -top-2 p-3 items-center rounded-full bg-red-500 text-white">
+                            {cartCount}                   
+                        </span>
+                    )
+                }
                 <svg 
                     className="w-10 h-10" 
                     fill="none" 

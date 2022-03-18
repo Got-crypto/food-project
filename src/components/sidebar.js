@@ -3,14 +3,16 @@ import { motion } from "framer-motion"
 import Variants from "./Sidebar/variants"
 import ShoppingCart from "./Sidebar/shoping-cart"
 
-export default function Sidebar({cart, switchToVariants, handleOpenSidebar, isVariants, setIsVariants, switchToShoppingCart, setCart, sidebarOpen, setSidebarOpen,  setCartCount, handleDisplayImage, setSelectValue, food, setFood, quantity, setQuantity, handleFoodChange, handleSelectedFoodPhoto, handleSelectedFoodPrice}){
+export default function Sidebar({cart, switchToVariants, handleAddVariantToCart, handleOpenSidebar, isVariants, setIsVariants, switchToShoppingCart, setCart, sidebarOpen, setSidebarOpen,  setCartCount, handleDisplayImage, setSelectValue, food, setFood, quantity, setQuantity, handleFoodChange, handleSelectedFoodPhoto, handleSelectedFoodPrice}){
     
 
     return (
         <motion.div 
-            className="fixed shadow-2xl shadow-black h-screen top-28 -right-96 lg:top-14 z-20 w-96 bg-navbar flex flex-col items-center"
+            className="fixed shadow-2xl shadow-black h-[110vh] top-28 -right-96 lg:top-14 z-20 w-[25rem] bg-navbar flex flex-col items-center"
             initial={{
-                x: 0
+                x: 0,
+                y: -40,
+                scale: .90
             }}
             animate={{
                 x: sidebarOpen ? -320 : 0
@@ -61,6 +63,7 @@ export default function Sidebar({cart, switchToVariants, handleOpenSidebar, isVa
                     handleSelectedFoodPrice={handleSelectedFoodPrice}
                     setSelectValue={setSelectValue}
                     handleDisplayImage={handleDisplayImage}
+                    handleAddVariantToCart={handleAddVariantToCart}
                     />
                 <ShoppingCart 
                     handleDisplayImage={handleDisplayImage}

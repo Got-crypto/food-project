@@ -5,7 +5,7 @@ import ProfileSettings from "./profile-settings";
 import UserContext from '../../context/user'
 import { getUserDetailsByUserId } from "../../services/firebase";
 
-export default function NavMenu( {switchToShoppingCart, setSidebarOpen, searchedItems, setSearchedItems, cartCount} ){
+export default function NavMenu( {switchToShoppingCart, openShoppingCart, setSidebarOpen, searchedItems, setSearchedItems, cartCount} ){
     const [profileSettingsOpen, setProfileSettingsOpen] = useState(false)
     const {user} = useContext(UserContext)
     const [isAdmin, setIsAdmin] = useState(null)
@@ -14,12 +14,6 @@ export default function NavMenu( {switchToShoppingCart, setSidebarOpen, searched
         setProfileSettingsOpen(!profileSettingsOpen)
     }
 
-    const openShoppingCart = ()=>{
-        switchToShoppingCart()
-        setSidebarOpen(true)
-
-        console.log("attempting to open shopping cart ...");
-    }
 
     useEffect(()=> {
         

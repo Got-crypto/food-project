@@ -8,6 +8,7 @@ const Login = lazy( () => import('./pages/login') )
 const Signup = lazy( () => import('./pages/signup') )
 const Dashboard = lazy( () => import('./pages/dashboard') )
 const Payments = lazy(()=> import('./pages/payments'))
+const ProfileEdit = lazy(()=> import('./pages/profile-edit'))
 
 export default function App(){
   const {user} = useAuthListener()
@@ -19,6 +20,7 @@ export default function App(){
             <Route component={Signup} path={ROUTES.Signup}/>
             <Route component={Dashboard} path={ROUTES.Dashboard} exact/>
             <Route component={Payments} path={'/payments'} />
+            <Route component={ProfileEdit} path={'/profile'} />
         </Switch>
       </Suspense>
     </UserContext.Provider>

@@ -17,7 +17,7 @@ export default function ProfileSettings({profileSettingsOpen, setProfileSettings
         >
             <li>
                 <Link
-                    to={'/'}
+                    to={'/profile'}
                     className="text-sm font-bold py-2 flex justify-between items-center px-4"
                 >
                     <p>profile</p>

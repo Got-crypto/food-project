@@ -68,7 +68,6 @@ export default function Login(){
                     className="text-white shadow-md flex flex-col justify-center items-center font-bold text-sm border h-auto col-span-3 lg:col-span-1 rounded w-96"
                     onKeyDown={event => {
                         if( event.key === 'Enter' && !isDisabled ){
-                            console.log("key pressed", event.key);
                             return handleLogin()
                         }
                     }}

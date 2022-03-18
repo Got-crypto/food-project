@@ -3,7 +3,7 @@ import { motion } from "framer-motion"
 export default function ImgDisplay({ isDisplayed, setIsDisplayed, clickedImage, setClickedImage, handleDisplayImage}){
     return(
         <motion.div 
-            className={`h-screen flex  ${!isDisplayed && 'hidden' } fixed justify-center items-center w-full`}
+            className={`h-screen z-30 flex  ${!isDisplayed && 'hidden' } top-0 fixed justify-center items-center w-full`}
             onClick={handleDisplayImage}
         >
             <motion.div 
