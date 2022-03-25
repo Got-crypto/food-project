@@ -1,8 +1,9 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import Authors from '../components/authors'
 import Documentaries from '../components/documentaries'
 import Footer from '../components/footer'
 import Gallery from '../components/gallery'
+import HeroSection from '../components/hero-section'
 import ImgDisplay from '../components/img-display'
 import Navbar from '../components/navbar'
 import Sidebar from '../components/sidebar'
@@ -18,6 +19,9 @@ export default function Dashboard(){
     const [isDisplayed, setIsDisplayed] = useState(false)
     const {user} = useContext(UserContext)
     const [selectValue, setSelectValue] = useState(null)
+    const menu = useRef(null)
+
+    const handleGetHeroMenu = () => menu.current.focus()
 
     const handleDisplayImage = (photo)=>{
         setClickedImage(photo)
@@ -141,7 +145,7 @@ export default function Dashboard(){
 
         const results = indexedMenu.filter(item => item.name.toLowerCase().includes(searchedItems.toLowerCase()))
 
-        setSearchResults(results)
+      setSearchResults(results)
     }, [searchedItems])
 
     useEffect(()=>{
@@ -158,48 +162,58 @@ export default function Dashboard(){
                 setSidebarOpen={setSidebarOpen}
             />
             <div className='h-auto mt-14 w-full divide-y-2 bg-neutral-500'>
-                <Gallery 
-                    clickedImage={clickedImage}
-                    setClickedImage={setClickedImage}
-                    handleDisplayImage={handleDisplayImage}
-                    menu={heroMenu}
-                    handleShoppingCart={handleShoppingCart}
-                    getMenu={getMenu}
-                    handleFoodChange={handleFoodChange} 
-                    handleSelectedFoodPhoto={handleSelectedFoodPhoto} 
-                    handleSelectedFoodPrice={handleSelectedFoodPrice}
-                    setFood={setFood}
-                    selectValue={selectValue}
-                    setSidebarOpen={setSidebarOpen}
-                    switchToVariants={switchToVariants}
-                    searchedItems={searchedItems}
-                    searchResults={searchResults}
-                />
-                <Documentaries />
+                {
+                    user ? (
+                    <>
+                        <Gallery 
+                            clickedImage={clickedImage}
+                            setClickedImage={setClickedImage}
+                            handleDisplayImage={handleDisplayImage}
+                            menu={heroMenu}
+                            handleShoppingCart={handleShoppingCart}
+                            getMenu={getMenu}
+                            handleFoodChange={handleFoodChange} 
+                            handleSelectedFoodPhoto={handleSelectedFoodPhoto} 
+                            handleSelectedFoodPrice={handleSelectedFoodPrice}
+                            setFood={setFood}
+                            selectValue={selectValue}
+                            setSidebarOpen={setSidebarOpen}
+                            switchToVariants={switchToVariants}
+                            searchedItems={searchedItems}
+                            searchResults={searchResults}
+                        />
+                        <Sidebar 
+                            cart={cart}
+                            food={food}
+                            setFood={setFood}
+                            quantity={quantity} 
+                            setQuantity={setQuantity} 
+                            handleFoodChange={handleFoodChange} 
+                            handleSelectedFoodPhoto={handleSelectedFoodPhoto} 
+                            handleSelectedFoodPrice={handleSelectedFoodPrice}
+                            setSelectValue={setSelectValue}
+                            handleDisplayImage={handleDisplayImage}
+                            setCart={setCart}
+                            setCartCount={setCartCount}
+                            switchToVariants={switchToVariants} 
+                            handleOpenSidebar={handleOpenSidebar}
+                            isVariants={isVariants} 
+                            setIsVariants={setIsVariants} 
+                            switchToShoppingCart={switchToShoppingCart} 
+                            sidebarOpen={sidebarOpen}
+                            setSidebarOpen={setSidebarOpen}
+                            handleAddVariantToCart={handleAddVariantToCart}
+                        />
+                    </>
+                    ) : (
+                        <>
+                            <HeroSection handleGetHeroMenu={handleGetHeroMenu}/>
+                            <Documentaries menu={menu} handleDisplayImage={handleDisplayImage}/>
+                        </>
+                    )
+                }
                 <Authors />
                 <Footer />
-                <Sidebar 
-                    cart={cart}
-                    food={food}
-                    setFood={setFood}
-                    quantity={quantity} 
-                    setQuantity={setQuantity} 
-                    handleFoodChange={handleFoodChange} 
-                    handleSelectedFoodPhoto={handleSelectedFoodPhoto} 
-                    handleSelectedFoodPrice={handleSelectedFoodPrice}
-                    setSelectValue={setSelectValue}
-                    handleDisplayImage={handleDisplayImage}
-                    setCart={setCart}
-                    setCartCount={setCartCount}
-                    switchToVariants={switchToVariants} 
-                    handleOpenSidebar={handleOpenSidebar}
-                    isVariants={isVariants} 
-                    setIsVariants={setIsVariants} 
-                    switchToShoppingCart={switchToShoppingCart} 
-                    sidebarOpen={sidebarOpen}
-                    setSidebarOpen={setSidebarOpen}
-                    handleAddVariantToCart={handleAddVariantToCart}
-                />
             </div>
             <ImgDisplay
                 clickedImage={clickedImage} 

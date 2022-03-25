@@ -3,7 +3,7 @@ export default function SmallScreenElements( {searchedItems, openShoppingCart, s
         <div className="h-16 max-w-screen-sm mx-auto lg:hidden flex justify-evenly md:justify-start items-center w-full">
             <div className="h-full inline-flex lg:hidden items-center center">
                 <input
-                    className="h-2/3 w-80 bg-white outline-none placeholder:font-sans rounded-l-md px-2 font-bold text-sm"
+                    className="h-2/3 w-80 bg-white text-black outline-none placeholder:font-sans rounded-l-md px-2 font-bold text-sm"
                     value={searchedItems}
                     onChange={({target})=>setSearchedItems(target.value)}
                     placeholder="Search for your dishes here ..."

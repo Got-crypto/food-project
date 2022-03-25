@@ -31,7 +31,7 @@ export default function NavMenu( {switchToShoppingCart, openShoppingCart, setSid
         <div className="h-full flex justify-center items-center">
             <div className="h-full hidden lg:inline-flex items-center justify-center  w-auto">
                 <input
-                    className="h-2/3 w-80 bg-white outline-none placeholder:font-sans rounded-l-md px-2 font-bold text-sm"
+                    className="h-2/3 w-80 bg-white text-black outline-none placeholder:font-sans rounded-l-md px-2 font-bold text-sm"
                     value={searchedItems}
                     onChange={({target})=>setSearchedItems(target.value)}
                     placeholder="Search for your dishes here ..."
@@ -84,21 +84,15 @@ export default function NavMenu( {switchToShoppingCart, openShoppingCart, setSid
                             </svg>
                         </button>
                             { 
-                                isAdmin !== null ? (
-                                    isAdmin ? (
+                                isAdmin ? (
                                         <p className="h-full text-xs pl-10 w-40 text-white justify-center flex items-center">
                                             Hello, {user.displayName}! Let's get to work comrade!
                                         </p>
-                                        ) : (
-                                            <p className="h-full text-xs pl-10 w-40 text-white justify-center flex items-center">
-                                                Hello, {user.displayName}! What are you ordering today?
-                                            </p>
-                                        )
-                                ) : (
-                                    <p className="h-full text-xs pl-10 w-40 text-white justify-center flex items-center">
-                                        Content Loading ...
-                                    </p>
-                                )
+                                    ) : (
+                                        <p className="h-full text-xs pl-10 w-40 text-white justify-center flex items-center">
+                                            Hello, {user.displayName}! What are you ordering today?
+                                        </p>
+                                    )
                             }
                             <div className="relative">
                                 <div
@@ -107,7 +101,14 @@ export default function NavMenu( {switchToShoppingCart, openShoppingCart, setSid
                                 >
 
                                     {
-                                        !user.providerData[0].photoURL ? (
+                                        user.providerData[0].photoURL ? (
+                                            <img
+                                                className="ml-3 h-10 w-10 rounded-full"
+                                                alt={`${user.displayName} profile`}
+                                                title={`${user.displayName}`}
+                                                src={user.providerData[0].photoURL}
+                                            />
+                                        ) : (
                                             <div
                                                 className="text-black h-full ml-2"
                                             >
@@ -128,13 +129,6 @@ export default function NavMenu( {switchToShoppingCart, openShoppingCart, setSid
                                                     </svg>
                                                 </p>
                                             </div>
-                                        ) : (
-                                            <img
-                                                className="ml-3 h-10 w-10 rounded-full"
-                                                alt={`${user.displayName} profile`}
-                                                title={`${user.displayName}`}
-                                                src={user.providerData[0].photoURL}
-                                            />
                                         )
                                     }
                                     {

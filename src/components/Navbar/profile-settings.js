@@ -7,7 +7,7 @@ export default function ProfileSettings({profileSettingsOpen, setProfileSettings
     const {firebase} = useContext(FirebaseContext)
     return (
         <motion.ul 
-            className={`divide-y divide-white w-36 shadow-md shadow-black bg-btnsecondary z-30 right-2 absolute rounded h-auto p-2`}
+            className={`divide-y divide-white w-36 shadow-md text-black shadow-black bg-btnsecondary z-30 right-2 absolute rounded h-auto p-2`}
             initial={{
                 y: -200
             }}

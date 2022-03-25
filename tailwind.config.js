@@ -5,6 +5,7 @@ module.exports = {
       backgroundImage: {
         login: "url('./images/loginbg.jpg')",
         hero: "url('./images/pizza-hero.jpg')",
+        unAuthHero: "url('./images/thepiebg.jpg')",
       },
       colors: {
         btnprimary: "#d79914",

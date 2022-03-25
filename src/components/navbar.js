@@ -9,7 +9,7 @@ export default function Navbar( {switchToShoppingCart, setSidebarOpen, searchedI
     }
     return (
         <>
-            <div className="h-14 fixed lg:shadow-md lg:shadow-black top-0 z-50 w-full bg-navbar ">
+            <div className="h-14 fixed lg:shadow-md text-white lg:shadow-black top-0 z-50 w-full bg-navbar ">
                 <div className="h-full max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl w-full mx-auto flex justify-between items-center">
                     <Logo/>
                     <NavMenu openShoppingCart={openShoppingCart} switchToShoppingCart={switchToShoppingCart} setSidebarOpen={setSidebarOpen} searchedItems={searchedItems} cartCount={cartCount} setSearchedItems={setSearchedItems}/>
