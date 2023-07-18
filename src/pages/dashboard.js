@@ -1,10 +1,11 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 import Authors from '../components/authors'
-import Documentaries from '../components/documentaries'
+import FoodMenu from '../components/food-menu'
 import Footer from '../components/footer'
 import Gallery from '../components/gallery'
 import HeroSection from '../components/hero-section'
 import ImgDisplay from '../components/img-display'
+import Instructions from '../components/instructions'
 import Navbar from '../components/navbar'
 import Sidebar from '../components/sidebar'
 import * as Menu from '../constants/menu'
@@ -20,8 +21,10 @@ export default function Dashboard(){
     const {user} = useContext(UserContext)
     const [selectValue, setSelectValue] = useState(null)
     const menu = useRef(null)
+    const galleryMenu = useRef(null)
 
     const handleGetHeroMenu = () => menu.current.focus()
+    const handleGetGalleryMenu = () => galleryMenu.current.focus()
 
     const handleDisplayImage = (photo)=>{
         setClickedImage(photo)
@@ -112,6 +115,7 @@ export default function Dashboard(){
             quantity,
             name: food,
             price,
+            index: Math.floor(Math.random() * (80000 * 80000)),
             photo
         }
 
@@ -124,10 +128,21 @@ export default function Dashboard(){
     
     useEffect(()=>{
         const getShoppingCart = async () =>{
-            const response = await getUserDetailsByUserId( user.uid )
-            
-            setCartCount(response[0].cart.length)
-            setCart( response[0].cart )
+            if( user ){
+                try {
+                    
+                    const response = await getUserDetailsByUserId( user.uid )
+                    setCartCount(response[0].cart.length)
+                    setCart( response[0].cart )
+                } catch (error) {
+                    console.log('error', error.message)
+                } finally{
+                    console.log("check internet connection ...");
+                }
+            }else{
+                console.log("no user logged in ...");
+            }
+
         }
         getShoppingCart()
         
@@ -144,7 +159,7 @@ export default function Dashboard(){
         }))
 
         const results = indexedMenu.filter(item => item.name.toLowerCase().includes(searchedItems.toLowerCase()))
-
+        
       setSearchResults(results)
     }, [searchedItems])
 
@@ -153,13 +168,15 @@ export default function Dashboard(){
         getMenu()
     }, [])
     return (
-        <div className="h-auto w-full flex flex-col justify-center items-center">
+        <div className="h-auto flex flex-col justify-center items-center">
             <Navbar 
                 setSearchedItems={setSearchedItems} 
                 searchedItems={searchedItems}
                 cartCount={cartCount} 
                 switchToShoppingCart={switchToShoppingCart}
                 setSidebarOpen={setSidebarOpen}
+                handleGetHeroMenu={handleGetHeroMenu}
+                handleGetGalleryMenu={handleGetGalleryMenu}
             />
             <div className='h-auto mt-14 w-full divide-y-2 bg-neutral-500'>
                 {
@@ -204,11 +221,12 @@ export default function Dashboard(){
                             setSidebarOpen={setSidebarOpen}
                             handleAddVariantToCart={handleAddVariantToCart}
                         />
+                            <FoodMenu handleGetHeroMenu={handleGetHeroMenu} searchResults={searchResults} searchedItems={searchedItems} menu={menu} handleDisplayImage={handleDisplayImage}/>
                     </>
                     ) : (
                         <>
                             <HeroSection handleGetHeroMenu={handleGetHeroMenu}/>
-                            <Documentaries menu={menu} handleDisplayImage={handleDisplayImage}/>
+                            <FoodMenu handleGetHeroMenu={handleGetHeroMenu} searchResults={searchResults} searchedItems={searchedItems} menu={menu} handleDisplayImage={handleDisplayImage}/>
                         </>
                     )
                 }

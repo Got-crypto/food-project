@@ -10,3 +10,7 @@
 .simplebar-track {
     border: none;
 }
+
+* {
+    scroll-behavior: smooth;
+}

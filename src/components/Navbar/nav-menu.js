@@ -5,10 +5,13 @@ import ProfileSettings from "./profile-settings";
 import UserContext from '../../context/user'
 import { getUserDetailsByUserId } from "../../services/firebase";
 
-export default function NavMenu( {switchToShoppingCart, openShoppingCart, setSidebarOpen, searchedItems, setSearchedItems, cartCount} ){
+export default function NavMenu( {switchToShoppingCart, openShoppingCart, handleGetGalleryMenu, setSidebarOpen, searchedItems, setSearchedItems, cartCount, handleGetHeroMenu} ){
     const [profileSettingsOpen, setProfileSettingsOpen] = useState(false)
     const {user} = useContext(UserContext)
     const [isAdmin, setIsAdmin] = useState(null)
+
+    console.log('user.providerData[0].photoUR', user?.providerData[0]?.photoURL)
+    
 
     const handleToggleProfileSettings = ()=>{
         setProfileSettingsOpen(!profileSettingsOpen)
@@ -19,8 +22,8 @@ export default function NavMenu( {switchToShoppingCart, openShoppingCart, setSid
         
         if( user ) {
             const handleAdminSide = async ()=> {
-                const response = await getUserDetailsByUserId(user.uid)
-                setIsAdmin(response[0].admin)
+                const response = await getUserDetailsByUserId(user?.uid)
+                setIsAdmin(response[0]?.admin)
             }
             handleAdminSide()
         }
@@ -38,6 +41,7 @@ export default function NavMenu( {switchToShoppingCart, openShoppingCart, setSid
                 />
                 <button
                     className="h-2/3 bg-white outline-none w-14 mr-4 rounded-r-md flex items-center justify-center"
+                    onClick={user ? handleGetGalleryMenu : handleGetHeroMenu}
                 >
                     <svg 
                         className="w-6 h-6 text-btnprimary" 
@@ -103,10 +107,10 @@ export default function NavMenu( {switchToShoppingCart, openShoppingCart, setSid
                                     {
                                         user.providerData[0].photoURL ? (
                                             <img
+                                                src={user.providerData[0].photoURL}
                                                 className="ml-3 h-10 w-10 rounded-full"
                                                 alt={`${user.displayName} profile`}
                                                 title={`${user.displayName}`}
-                                                src={user.providerData[0].photoURL}
                                             />
                                         ) : (
                                             <div

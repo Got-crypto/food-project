@@ -3,7 +3,7 @@ import { Link, useHistory } from "react-router-dom"
 import FirebaseContext from '../context/firebase'
 import * as ROUTES from '../constants/routes'
 import { shorts, slogans } from "../constants/slogans"
-import UserContext from "../context/user"
+import { handleFacebookLogin, handleGoogleLogin } from "../services/firebase"
 
 export default function Signup(){
 
@@ -43,8 +43,7 @@ export default function Signup(){
                     .firestore()
                     .collection('customers')
                     .add({
-                        firstName: firstName,
-                        lastName: lastName,
+                        username: `${firstName} ${lastName}`,
                         emailAddress: emailAddress,
                         profilePhoto: "",
                         admin: false,
@@ -52,13 +51,57 @@ export default function Signup(){
                         customerId: newCustomer.user.uid,
                         cart: []
                     })
-
-            history.push(ROUTES.Dashboard)
-
-        } catch (error) {
-            setError(error.message)
-            setPassword("")
-            setEmailAddress("")
+                    
+                    history.push(ROUTES.Dashboard)
+                    
+                } catch (error) {
+                    setError(error.message)
+                    setPassword("")
+                    setEmailAddress("")
+                }
+            }
+            
+            const loginWithGoogle = async () => {
+                try{
+                    const {user, accountExist} = await handleGoogleLogin()
+                    console.log('user', user)
+                    if( !accountExist ){
+                        await firebase
+                            .firestore()
+                            .collection('customers')
+                            .add({
+                                username: user.displayName,
+                                emailAddress: user.email,
+                                profilePhoto: user.photoURL,
+                                admin: false,
+                                address: "",
+                                customerId: user.uid,
+                                cart: []
+                            })
+                    }
+                    history.push(ROUTES.Dashboard)
+                }catch(error){
+                    console.log('google error.message', error.message)
+                }
+            }
+                    
+        const handleLoginWithFacebook = async () => {
+            try{
+                const {user} = await handleFacebookLogin()
+                await firebase
+                        .firestore()
+                        .collection('customers')
+                        .add({
+                            username: `${firstName} ${lastName}`,
+                            emailAddress: emailAddress,
+                            profilePhoto: "",
+                            admin: false,
+                            address: "",
+                            customerId: user.uid,
+                            cart: []
+                        })
+            }catch(error){
+                console.log('error.message, error.code', error.message, error.code)
         }
     }
 
@@ -136,7 +179,7 @@ export default function Signup(){
                         {slogan && slogan }
                     </p>
                     <div className="pt-5 h-auto flex flex-col justify-start">
-                        <button className="h-12  my-2 w-full flex justify-center items-center">
+                        <button onClick={loginWithGoogle} className="h-12  my-2 w-full flex justify-center items-center">
                             <div className="h-full text-black bg-white px-2 py-2 w-2/3 flex items-center justify-between">
                                 <p>Sign in with Google</p>
                                 <img
@@ -146,7 +189,7 @@ export default function Signup(){
                                 />
                             </div>
                         </button>
-                        <button className="h-12 w-full my-2 flex justify-center items-center">
+                        <button onClick = {handleLoginWithFacebook} className="h-12 w-full my-2 flex justify-center items-center">
                             <div className="h-full text-white bg-facebook px-2 py-2 w-2/3 flex items-center justify-between">
                                 <p>Sign in with Facebook</p>
                                 <div className="h-full bg-white rounded">

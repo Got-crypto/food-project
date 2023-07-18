@@ -1,6 +1,7 @@
 import { motion } from "framer-motion"
 
 export default function ImgDisplay({ isDisplayed, setIsDisplayed, clickedImage, setClickedImage, handleDisplayImage}){
+    console.log('clickedImage', clickedImage)
     return(
         <motion.div 
             className={`h-screen z-30 flex  ${!isDisplayed && 'hidden' } top-0 fixed justify-center items-center w-full`}

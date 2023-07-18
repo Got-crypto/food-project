@@ -4,6 +4,7 @@ import FirebaseContext from '../context/firebase'
 import * as ROUTES from '../constants/routes'
 import { slogans, shorts } from "../constants/slogans"
 import { useHistory } from "react-router-dom"
+import {handleFacebookLogin, handleGoogleLogin} from '../services/firebase'
 
 export default function Login(){
 
@@ -33,20 +34,20 @@ export default function Login(){
             await firebase.auth().signInWithEmailAndPassword(emailAddress, password)
             history.push(ROUTES.Dashboard)
         }catch(error){
-            switch (error.message) {
-                case "Firebase: There is no user record corresponding to this identifier. The user may have been deleted. (auth/user-not-found).":
+            switch (error.code) {
+                case "auth/user-not-found":
                     setError("User not found! Check if you entered your password and email address correctly")
                     break;
-                case "Firebase: A network AuthError (such as timeout, interrupted connection or unreachable host) has occurred. (auth/network-request-failed).":
+                case "auth/network-request-failed":
                     setError("Network error! check if you have a stable internet connection")
                     break
-                case "Firebase: The email address is badly formatted. (auth/invalid-email).":
+                case "auth/invalid-email":
                     setError("The email address is badly formatted")
                     break
-                case "Firebase: The password is invalid or the user does not have a password. (auth/wrong-password).":
+                case "auth/wrong-password":
                     setError("Email and Password do not match any records.")
                     break
-                default:
+                    default:
                     setError(error.message)
                     break;
             }
@@ -54,6 +55,41 @@ export default function Login(){
         }
     }
 
+    const loginWithGoogle = async () => {
+        try{
+            const {user, accountExist} = await handleGoogleLogin()
+            console.log('user', user)
+            if( !accountExist ){
+                await firebase
+                    .firestore()
+                    .collection('customerszz')
+                    .add({
+                        username: user.displayName,
+                        emailAddress: user.email,
+                        profilePhoto: user.photoURL,
+                        admin: false,
+                        address: "",
+                        customerId: user.uid,
+                        cart: []
+                    })
+            }
+            history.push(ROUTES.Dashboard)
+        }catch(error){
+            console.log('google error.message', error.message)
+        }
+    }
+
+    const handleLoginWithFacebook = async () => {
+        try{
+
+            console.log("loggin in ...");
+            const res = await handleFacebookLogin()
+
+            console.log('res', res)
+        }catch(error){
+            console.log('error.message, error.code', error.message, error.code)
+        }
+    }
 
     useEffect(()=>{
         document.title = "Login - The Pie"
@@ -121,7 +157,10 @@ export default function Login(){
                         {slogan && slogan }
                     </p>
                     <div className="pt-5 h-auto flex flex-col justify-start">
-                        <button className="h-12  my-2 w-full flex justify-center items-center">
+                        <button 
+                            className="h-12  my-2 w-full flex justify-center items-center"
+                            onClick={loginWithGoogle}
+                        >
                             <div className="h-full text-black bg-white px-2 py-2 w-2/3 flex items-center justify-between">
                                 <p>Sign in with Google</p>
                                 <img
@@ -131,7 +170,10 @@ export default function Login(){
                                 />
                             </div>
                         </button>
-                        <button className="h-12 w-full my-2 flex justify-center items-center">
+                        <button 
+                            className="h-12 w-full my-2 flex justify-center items-center"
+                            onClick={handleLoginWithFacebook}
+                        >
                             <div className="h-full text-white bg-facebook px-2 py-2 w-2/3 flex items-center justify-between">
                                 <p>Sign in with Facebook</p>
                                 <div className="h-full bg-white rounded">

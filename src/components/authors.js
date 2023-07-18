@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 
 export default function Authors(){
     return (
-        <div className="bg-slate-300 h-[150vh] w-full justify-center divide-y md:divide-none flex flex-col md:flex-row items-center">
+        <div className="bg-slate-300 h-[150vh] md:h-screen w-full justify-center divide-y md:divide-none flex flex-col md:flex-row items-center">
             {
                 WebsiteAuthors.map((item, index)=>{
                     return <div key={index} className="h-96 w-96 mx-2 my-4 flex flex-col justify-center items-center">
@@ -41,6 +41,7 @@ export default function Authors(){
                                                 className="h-8 flex justify-center items-center"
                                                 target='_blank'
                                                 rel='noreferrer'
+                                                key={index}
                                             >
                                                 <img
                                                     src={item.icon}

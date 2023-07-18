@@ -1,3 +1,4 @@
+import { FacebookAuthProvider, GoogleAuthProvider } from "firebase/auth"
 import { firebase, FieldValue } from "../lib/firebase"
 
 export async function getUserDetailsByUserId(customerId){
@@ -40,4 +41,34 @@ export async function deleteFoodFromUserShoppingCart( food, customerId ){
         .update({
             cart: FieldValue.arrayRemove(food)
         })
+}
+
+export async function handleFacebookLogin(){
+    const facebookAuth = new FacebookAuthProvider()
+
+    return await firebase
+        .auth()
+        .signInWithPopup(facebookAuth)
+}
+
+export async function handleGoogleLogin(){
+    const googleAuth = new GoogleAuthProvider()
+
+    const {user} =  await firebase
+        .auth()
+        .signInWithPopup(googleAuth)
+
+    let accountExist = false
+    
+    const result = await firebase
+        .firestore()
+        .collection('customers')
+        .where('emailAddress', '==', user.email)
+        .get()
+
+    if( !result.empty ) {
+        accountExist = !accountExist
+    }
+
+    return {user, accountExist}
 }

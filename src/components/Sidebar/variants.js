@@ -1,9 +1,11 @@
+import { useEffect } from "react"
 import * as Menu from "../../constants/menu"
 
 export default function Variants({isVariants, handleAddVariantToCart, handleDisplayImage, food, setSelectValue, quantity, setQuantity, handleFoodChange, handleSelectedFoodPhoto, handleSelectedFoodPrice }){
  
-    setSelectValue(document.getElementById("select"))
-
+    useEffect(()=>{
+        setSelectValue(document.getElementById("select"))
+    }, [setSelectValue])
     return (
         <div className={`${ isVariants ? 'flex' : 'hidden' } w-4/5 justify-center items-center `}>
             <div className="w-full mt-2 flex flex-col justify-center items-center">

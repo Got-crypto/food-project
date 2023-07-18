@@ -32,6 +32,8 @@ export default function ShoppingCart({cart, isVariants, setCartCount, handleDisp
         return price
     }
 
+    console.log('cart', cart)
+
     return (
         <div className={`w-4/5 ${ isVariants ? 'hidden' : 'block' }`}>
             <SimpleBar
@@ -44,9 +46,9 @@ export default function ShoppingCart({cart, isVariants, setCartCount, handleDisp
             >
                         {
                             cart.map(item => {
+                                // console.log('item.index, item.name', item.index, item.name)
                                 return <div key={item.index} className="flex flex-col justify-center items-center py-7 w-full">
                                     <motion.div 
-                                        layout
                                         className='flex justify-between items-center w-full '
                                         initial={{
                                             scale: 0.7
